@@ -1,0 +1,16 @@
+>>npm init
+>>npm install --save express
+
+[The --save flag tells npm to add the Express packages to the dependencies object in our project's 		package.json file. When we want to install these same packages again in the future - like on a production server - we can just run npm install.]
+
+>>node index.js
+
+
+Swagger
+
+>>npm install swagger-jsdoc --save
+>>npm install swagger-ui-express --save
+
+
+swagger url
+http://localhost:3000/api-docs/
