@@ -28,36 +28,38 @@
 1. install: after git clone, execute commands below in root directory:
 
 ```
-swagger-server/bin/install.sh
+npm install
 ```
 
-doing that will produce some client SDKs, server code, asciidoc and html documents, look like this:
+This command installs a package and any packages that it depends on.
+```
+{
+  "name": "swaggerdemo",
+  "version": "1.0.0",
+  "description": "REST API Documentation Tool | Swagger UI || Demo Project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "md rakib hasan",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "swagger-jsdoc": "6.0.0",
+    "swagger-ui-express": "^4.1.6"
+  }
+}
+```
+
+2. run node-server：
 
 ```
-+---asciidoc                    //asciidoc document
-+---client                      //auto Generated client SDKs
-|   +---go                      //-- client SDK in go programming language
-|   +---html2                   //-- html document
-|   \---java                    //-- client SDK in java programming language
-+---docs                        //html document
-|       swagger-example.html  
-+---server                      //auto generated server code
-|   +---jaxrs-resteasy          //-- jaxrs server code that uses resteasy
-|   \---spring                  //-- server code that uses spring mvc
-\---swagger-server              // example
-```
-
-2. run swagger-server：
-
-```
-java -jar swagger-server/target/swagger-server-${version}.jar
+node index.js
 ```
 
 3. explore:
 
-swagger.json: `http://127.0.0.1:8080/v2/api-docs`
-
-swagger-ui: `http://127.0.0.1:8080/swagger-ui.html`
+swagger: `http://localhost:3000/api-docs`
 
 swagger-ui looks like this:
 ![Demo-Api](swagger-ui.png)
@@ -69,9 +71,8 @@ swagger-ui looks like this:
 ### OpenAPI
 **OpenAPI Specification** (formerly Swagger Specification) is an API description format for REST APIs. An OpenAPI file allows you to describe your entire API, including:
 
-* Available endpoints (```/users```) and operations on each endpoint (```GET /users```, ```POST /users```)
+* Available endpoints (```/v1/about```) and operations on each endpoint (```GET /v1/contact```, ```POST /v1/contact```)
 * Operation parameters Input and output for each operation
-* Authentication methods
 * Contact information, license, terms of use and other information.
 
 API specifications can be written in YAML or JSON. The format is easy to learn and readable to both humans and machines. The complete OpenAPI Specification can be found on GitHub: 
@@ -102,26 +103,48 @@ The ability of APIs to describe their own structure is the root of all awesomene
 ### **Basic Structure**
 Swagger can be written in JSON or YAML. In this guide, we only use YAML examples, but JSON works equally well. A sample Swagger specification written in YAML looks like:
 
-```yaml
-swagger: "2.0"
-info:
-  title: Sample API
-  description: API description in Markdown.
-  version: 1.0.0
-host: api.example.com
-basePath: /v1
-schemes:
-  - https
-paths:
-  /users:
-    get:
-      summary: Returns a list of users.
-      description: Optional extended description in Markdown.
-      produces:
-        - application/json
-      responses:
-        200:
-          description: OK
+```
+{
+        openapi: "3.0.0",
+        swaggerDefinition: {
+            components: {},
+            info: {
+                version: "1.0.0",
+                title: "Swagger Demo API Services",
+                description: "This is a sample server of Swagger Demo api services.  You can find out more about Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/). For this sample, you can use the api key `special-key` to test the authorization filters.",
+                contact: {
+                    name: "MD RAKIB HASAN",
+                    email: "rakib424@gmail.com"
+                },
+                termsOfService: "http://swagger.io/terms/",
+                license: {
+                    name: "Swagger Demo license",
+                    url: "http://example.com/"
+                },
+                servers: [host]
+            },
+            host: host,
+            basePath: "/v1",
+            swagger: "2.0",
+            schemes: ["http", "https"],
+            externalDocs: {
+                description: "Find out more about Swagger Demo",
+                url: "http://google.com/"
+            },
+            securityDefinitions: {
+                Bearer: {
+                    type: "apiKey",
+                    name: "token",
+                    in: "header",
+                    description: "Enter your bearer token in the format **Bearer &lt;token>**"
+                }
+            },
+        },
+        apis: ["Controller/Home/*.js"]
+    };
+    const swaggerSpec = await swaggerJsDoc(swaggerOptions);
+    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+}
 ```
 
 
@@ -139,6 +162,14 @@ info:
   title: Sample API
   description: API description in Markdown.
   version: 1.0.0
+  contact:
+    name: "MD RAKIB HASAN",
+    email: "rakib424@gmail.com"
+  termsOfService: "http://swagger.io/terms/"
+    license:
+      name: "Swagger Demo license",              
+      url: "http://example.com/"
+  servers: ["localhost:3000"]
 ```
 
 ```version``` can be a random string. You can use major.minor.patch (as in [semantic versioning](http://semver.org/)), or an arbitrary format like 1.0-beta or 2016.11.15. 
