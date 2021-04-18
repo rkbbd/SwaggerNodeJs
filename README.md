@@ -8,7 +8,6 @@
   * [Basic Structure](#basic-structure)
   * [Metadata](#metadata)
   * [Base URL](#base-url)
-  * [Consumes, Produces](#consumes-produces)
   * [Paths](#paths)
   * [Parameters](#parameters)
   * [Responses](#responses)
@@ -159,9 +158,9 @@ Then, you need to specify the ```API info``` -- ```title```, ```description``` (
 
 ```yaml
 info:
-  title: Sample API
-  description: API description in Markdown.
-  version: 1.0.0
+  title: "Swagger Demo API Services",
+  description: "This is a sample server of Swagger Demo api services.  You can find out more about Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/). For this sample, you can use the api key `special-key` to test the authorization filters.",
+  version: "1.0.0",       
   contact:
     name: "MD RAKIB HASAN",
     email: "rakib424@gmail.com"
@@ -192,31 +191,15 @@ schemes:
 All API paths are relative to the base URL. For example, /users actually means *https://api.example.com/v1/users. 
 
 More info*: [API Host and Base URL](https://swagger.io/docs/specification/2-0/api-host-and-base-path/).
-
-
-### **Consumes, Produces**
-
-The ```consumes``` and ```produces``` sections define the MIME types supported by the API. The root-level definition can be overridden in individual operations.
-
-```yaml
-consumes:
-  - application/json
-  - application/xml
-produces:
-  - application/json
-  - application/xml
-```
-
-*More info*: [MIME Types](https://swagger.io/docs/specification/2-0/mime-types/).
   
 ### **Paths**
-The ```paths``` section defines individual endpoints (paths) in your API, and the HTTP methods (operations) supported by these endpoints. For example, ```GET /users``` can be described as:
+The ```paths``` section defines individual endpoints (paths) in your API, and the HTTP methods (operations) supported by these endpoints. For example, ```GET /v1/Contact``` can be described as:
 
 ```yaml
 paths:
-  /users:
+  /v1/Contact:
     get:
-      summary: Returns a list of users.
+      summary: Returns a list of Contact.
       description: Optional extended description in Markdown.
       produces:
         - application/json
@@ -234,7 +217,7 @@ You can define the parameter types, format, whether they are required or optiona
 
 ```yaml
 paths:
-  /users/{userId}:
+  /v1/contact/{userId}:
     get:
       summary: Returns a user by ID.
       parameters:
@@ -257,7 +240,7 @@ Schemas can be defined inline or referenced from an external definition via ```$
 
 ```yaml
 paths:
-  /users/{userId}:
+  /v1/contact/{userId}:
     get:
       summary: Returns a user by ID.
       parameters:
@@ -296,7 +279,7 @@ whenever a ```schema``` is required -- both for request body and response body. 
 ```json
 {
   "id": 4,
-  "name": "Arthur Dent"
+  "name": "MD. RAKIB HASAN"
 }
 ```
 can be represented as:
@@ -318,7 +301,7 @@ and then referenced in the request body schema and response body schema as follo
 
 ```yaml
 paths:
-  /users/{userId}:
+  /v1/Contact/{userId}:
     get:
       summary: Returns a user by ID.
       parameters:
@@ -331,7 +314,7 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/User'
-  /users:
+  /v1/contact:
     post:
       summary: Creates a new user.
       parameters:
@@ -348,12 +331,15 @@ paths:
 ### **Authentication**
 The ```securityDefinitions``` and ```security``` keywords are used to describe the authentication methods used in your API.
 
-```yaml
-securityDefinitions:
-  BasicAuth:
-    type: basic
-security:
-  - BasicAuth: []
+```
+ securityDefinitions: {
+                Bearer: {
+                    type: "apiKey",
+                    name: "token",
+                    in: "header",
+                    description: "Enter your bearer token in the format **Bearer &lt;token>**"
+                }
+            }
 ```
 
 Supported authentication methods are:
