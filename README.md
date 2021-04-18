@@ -61,7 +61,7 @@ node index.js
 swagger: `http://localhost:3000/api-docs`
 
 swagger-ui looks like this:
-![Demo-Api](swagger-ui.png)
+![Demo-Api](swagger-ui.jpg)
 
 ---
 ### ***Introduction to OpenAPI & Swagger Open Source Tools***
