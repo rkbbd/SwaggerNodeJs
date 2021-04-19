@@ -8,18 +8,14 @@ exports.About = function (req, res) {
     res.send("<b>About works</b>");
 };
 
-/**
- * @swagger
- * definations:
- *   Category:
- *     type: object
- *     properties:
- *       id:
- *         type: integer
- *         format: int64
- *       name:
- *         type: string
- */
+   /**
+   * @swagger
+   * definitions:
+   *   User:
+   *     type: object
+   *     schema:
+   *     $ref: '#/components/schemas/Person' 
+   */
 
 /**
  * @swagger
@@ -124,6 +120,11 @@ exports.About = function (req, res) {
 *          type: string
 *        required: true
 *        description: name
+*      - in: body
+*        name: User
+*        description: The Notification.
+*        schema:
+*          $ref: '#/components/schemas/User' 
 *     responses:
 *       200:
 *         description: success 
@@ -136,19 +137,36 @@ exports.About = function (req, res) {
 */
 
 
-  /**
-    * @swagger
-    * components:
-    *   schemas:
-    *     User:
-    *       type: object
-    *       required:
-    *       - name
-    *       properties:
-    *         name:
-    *           type: string
-    *           example: 'Mr. X'
-    */
+/**
+  * @swagger
+  * components:
+  *   schemas:
+  *     User:
+  *       type: object
+  *       required:
+  *       - name
+  *       properties:
+  *         name:
+  *           type: string
+  *           example: 'Mr. X'
+  */
+
+/**
+* @swagger
+* components:
+*   schemas:
+*     Person:
+*       type: object
+*       required:
+*       - user
+*       properties:
+*         address:
+*           type: string
+*         email:
+*           type: string
+*         user:
+*           $ref: '#/components/schemas/User'
+*/
 
 exports.GetContact = function (req, res) {
     res.send("contact Works")
